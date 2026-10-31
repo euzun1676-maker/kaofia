@@ -1,0 +1,122 @@
+-- Build a Phone Empire - Ultimate Mod Menu & Speed Hack
+-- Pure Lua, clean execution, toggleable GUI
+
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+-- Remove old GUI if exists
+if CoreGui:FindFirstChild("PhoneEmpireModMenu") then
+    CoreGui.PhoneEmpireModMenu:Destroy()
+end
+
+-- Create ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "PhoneEmpireModMenu"
+ScreenGui.Parent = CoreGui
+ScreenGui.ResetOnSpawn = false
+
+-- Main Frame (Mod Menu Panel)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+MainFrame.Position = UDim2.new(0.5, -125, 0.4, -100)
+MainFrame.Size = UDim2.new(0, 250, 0, 220)
+MainFrame.Visible = true
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10)
+UICorner.Parent = MainFrame
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Parent = MainFrame
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 16
+Title.Font = Enum.Font.GothamBold
+Title.Text = "Phone Empire Mod Menu"
+
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.CornerRadius = UDim.new(0, 10)
+TitleCorner.Parent = Title
+
+-- Function to create buttons
+local function CreateButton(name, posY, callback)
+    local btn = Instance.new("TextButton")
+    btn.Parent = MainFrame
+    btn.Size = UDim2.new(0.9, 0, 0, 35)
+    btn.Position = UDim2.new(0.05, 0, 0, posY)
+    btn.BackgroundColor3 = Color3.fromRGB(60, 60, 75)
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 14
+    btn.Font = Enum.Font.GothamSemibold
+    btn.Text = name
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = btn
+    
+    btn.MouseButton1Click:Connect(callback)
+end
+
+-- Speed Hack Logic
+local currentSpeedMultiplier = 1
+
+RunService.Heartbeat:Connect(function()
+    if currentSpeedMultiplier > 1 then
+        pcall(function()
+            -- Force game tick scale if accessible via client modules
+            for _, obj in pairs(ReplicatedStorage:GetDescendants()) do
+                if obj:IsA("RemoteEvent") and string.find(string.lower(obj.Name), "speed") then
+                    obj:FireServer(currentSpeedMultiplier)
+                end
+            end
+        end)
+    end
+end)
+
+-- Button 1: Normal Speed (1x)
+CreateButton("Normal Speed (1x)", 55, function()
+    currentSpeedMultiplier = 1
+    print("Speed set to 1x")
+end)
+
+-- Button 2: Turbo Speed (8x)
+CreateButton("Turbo Speed (8x)", 100, function()
+    currentSpeedMultiplier = 8
+    print("Speed set to 8x!")
+end)
+
+-- Button 3: Ultra Speed (16x)
+CreateButton("Ultra Speed (16x)", 145, function()
+    currentSpeedMultiplier = 16
+    print("Speed set to 16x!!")
+end)
+
+-- Toggle Button (Open/Close Menu UI)
+local ToggleBtn = Instance.new("TextButton")
+ToggleBtn.Parent = ScreenGui
+ToggleBtn.Size = UDim2.new(0, 90, 0, 35)
+ToggleBtn.Position = UDim2.new(0.02, 0, 0.1, 0)
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(40, 120, 220)
+ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleBtn.TextSize = 12
+ToggleBtn.Font = Enum.Font.GothamBold
+ToggleBtn.Text = "Menu Ac/Kapat"
+
+local ToggleCorner = Instance.new("UICorner")
+ToggleCorner.CornerRadius = UDim.new(0, 8)
+ToggleCorner.Parent = ToggleBtn
+
+ToggleBtn.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)
+
+print("Phone Empire Mod Menu Loaded Successfully!")
