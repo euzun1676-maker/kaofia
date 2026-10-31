@@ -1,16 +1,16 @@
--- Build a Phone Empire - Ultimate Safe Bypass Menu
+-- Build a Phone Empire - Direct Execution Mod Menu
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
--- Eski menü kalıntısı varsa tamamen temizle
+-- Eski menü varsa temizle
 pcall(function()
     if CoreGui:FindFirstChild("PhoneEmpireModMenu") then
         CoreGui.PhoneEmpireModMenu:Destroy()
     end
 end)
 
--- Ana Ekran GUI (CoreGui kullanarak oyunun korumalarını bypass eder)
+-- Ana Ekran GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "PhoneEmpireModMenu"
 ScreenGui.Parent = CoreGui
@@ -51,7 +51,7 @@ Title.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 15
 Title.Font = Enum.Font.GothamBold
-Title.Text = "Build a Phone Empire v1"
+Title.Text = "Phone Empire Mod Menu"
 
 local TitleCorner = Instance.new("UICorner")
 TitleCorner.CornerRadius = UDim.new(0, 12)
@@ -76,46 +76,36 @@ local function CreateMenuButton(name, posY, callback)
     btn.MouseButton1Click:Connect(callback)
 end
 
--- Buton 1: Normal Hiz
+-- Butonlar
 CreateMenuButton("Normal Hiz (1x)", 55, function()
     pcall(function()
         for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
-            if v:IsA("RemoteEvent") then
-                v:FireServer(1)
-            end
+            if v:IsA("RemoteEvent") then v:FireServer(1) end
         end
     end)
-    print("Hiz 1x yapildi")
+    print("Hiz 1x")
 end)
 
--- Buton 2: Turbo Hiz (8x)
 CreateMenuButton("Turbo Hiz (8x)", 100, function()
     pcall(function()
         for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
-            if v:IsA("RemoteEvent") then
-                v:FireServer(8)
-            end
+            if v:IsA("RemoteEvent") then v:FireServer(8) end
         end
     end)
-    print("Hiz 8x aktif edildi!")
+    print("Hiz 8x aktif!")
 end)
 
--- Buton 3: Ultra Hiz (16x)
 CreateMenuButton("Ultra Hiz (16x)", 145, function()
     pcall(function()
         for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
-            if v:IsA("RemoteEvent") then
-                v:FireServer(16)
-            end
+            if v:IsA("RemoteEvent") then v:FireServer(16) end
         end
     end)
-    print("Hiz 16x patlatildi!")
+    print("Hiz 16x aktif!")
 end)
 
--- Menüyü Gizle/Görselleştir
 ToggleBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
 end)
 
-print("Mod Menu Guvenli Modda Yuklendi!")
-
+print("Mod Menu Dogrudan Yuklendi!")
