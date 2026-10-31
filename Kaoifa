@@ -1,105 +1,121 @@
--- Build a Phone Empire - Guaranteed Working Mod Menu
+-- Build a Phone Empire - Ultimate Safe Bypass Menu
+local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
--- Eski menü varsa temizle
-if PlayerGui:FindFirstChild("PhoneEmpireModMenu") then
-    PlayerGui.PhoneEmpireModMenu:Destroy()
-end
+-- Eski menü kalıntısı varsa tamamen temizle
+pcall(function()
+    if CoreGui:FindFirstChild("PhoneEmpireModMenu") then
+        CoreGui.PhoneEmpireModMenu:Destroy()
+    end
+end)
 
--- Ana Ekran GUI
+-- Ana Ekran GUI (CoreGui kullanarak oyunun korumalarını bypass eder)
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "PhoneEmpireModMenu"
-ScreenGui.Parent = PlayerGui
+ScreenGui.Parent = CoreGui
 ScreenGui.ResetOnSpawn = false
 
--- Aç/Kapat Butonu (Sol üst köşe)
+-- Sol Üst Sabit Aç/Kapat Butonu
 local ToggleBtn = Instance.new("TextButton")
 ToggleBtn.Parent = ScreenGui
-ToggleBtn.Size = UDim2.new(0, 110, 0, 40)
-ToggleBtn.Position = UDim2.new(0.02, 0, 0.08, 0)
-ToggleBtn.BackgroundColor3 = Color3.fromRGB(40, 120, 220)
+ToggleBtn.Size = UDim2.new(0, 120, 0, 45)
+ToggleBtn.Position = UDim2.new(0.02, 0, 0.05, 0)
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(20, 110, 240)
 ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-ToggleBtn.TextSize = 13
+ToggleBtn.TextSize = 14
 ToggleBtn.Font = Enum.Font.GothamBold
-ToggleBtn.Text = "MENU AC/KAPAT"
+ToggleBtn.Text = "MOD MENU"
 
 local ToggleCorner = Instance.new("UICorner")
 ToggleCorner.CornerRadius = UDim.new(0, 8)
 ToggleCorner.Parent = ToggleBtn
 
--- Ana Panel (Mod Menü Kutusu)
+-- Ana Kontrol Paneli
 local MainFrame = Instance.new("Frame")
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-MainFrame.Position = UDim2.new(0.5, -125, 0.4, -100)
-MainFrame.Size = UDim2.new(0, 250, 0, 180)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+MainFrame.Position = UDim2.new(0.5, -130, 0.4, -110)
+MainFrame.Size = UDim2.new(0, 260, 0, 200)
 MainFrame.Visible = true
 
 local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.CornerRadius = UDim.new(0, 12)
 MainCorner.Parent = MainFrame
 
 -- Başlık
 local Title = Instance.new("TextLabel")
 Title.Parent = MainFrame
-Title.Size = UDim2.new(1, 0, 0, 40)
-Title.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
+Title.Size = UDim2.new(1, 0, 0, 45)
+Title.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 15
 Title.Font = Enum.Font.GothamBold
-Title.Text = "HIZ MODU"
+Title.Text = "Build a Phone Empire v1"
 
 local TitleCorner = Instance.new("UICorner")
-TitleCorner.CornerRadius = UDim.new(0, 10)
+TitleCorner.CornerRadius = UDim.new(0, 12)
 TitleCorner.Parent = Title
 
--- Buton Oluşturma Fonksiyonu
-local function AddButton(name, posY, callback)
+-- Hizli Buton Olusturucu
+local function CreateMenuButton(name, posY, callback)
     local btn = Instance.new("TextButton")
     btn.Parent = MainFrame
-    btn.Size = UDim2.new(0.9, 0, 0, 35)
+    btn.Size = UDim2.new(0.9, 0, 0, 38)
     btn.Position = UDim2.new(0.05, 0, 0, posY)
-    btn.BackgroundColor3 = Color3.fromRGB(60, 60, 75)
+    btn.BackgroundColor3 = Color3.fromRGB(55, 55, 70)
     btn.TextColor3 = Color3.fromRGB(255, 255, 255)
     btn.TextSize = 14
     btn.Font = Enum.Font.GothamSemibold
     btn.Text = name
     
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 6)
+    corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = btn
     
     btn.MouseButton1Click:Connect(callback)
 end
 
--- Hız Değiştirme Fonksiyonları
-AddButton("Normal Hiz (1x)", 55, function()
+-- Buton 1: Normal Hiz
+CreateMenuButton("Normal Hiz (1x)", 55, function()
     pcall(function()
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(1)
+        for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+            if v:IsA("RemoteEvent") then
+                v:FireServer(1)
+            end
+        end
     end)
     print("Hiz 1x yapildi")
 end)
 
-AddButton("Turbo Hiz (8x)", 100, function()
+-- Buton 2: Turbo Hiz (8x)
+CreateMenuButton("Turbo Hiz (8x)", 100, function()
     pcall(function()
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(8)
+        for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+            if v:IsA("RemoteEvent") then
+                v:FireServer(8)
+            end
+        end
     end)
-    print("Hiz 8x yapildi!")
+    print("Hiz 8x aktif edildi!")
 end)
 
-AddButton("Ultra Hiz (16x)", 145, function()
+-- Buton 3: Ultra Hiz (16x)
+CreateMenuButton("Ultra Hiz (16x)", 145, function()
     pcall(function()
-        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(16)
+        for _, v in pairs(game:GetService("ReplicatedStorage"):GetDescendants()) do
+            if v:IsA("RemoteEvent") then
+                v:FireServer(16)
+            end
+        end
     end)
-    print("Hiz 16x yapildi!!")
+    print("Hiz 16x patlatildi!")
 end)
 
--- Menüyü Aç/Kapat Bağlantısı
+-- Menüyü Gizle/Görselleştir
 ToggleBtn.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
 end)
 
-print("Mod Menu Basariyla Yuklendi!")
+print("Mod Menu Guvenli Modda Yuklendi!")
 
